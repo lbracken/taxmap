@@ -1,0 +1,19 @@
+United States Census Bureau (????). State & County QuickFacts. Retrieved January 15, 2014, from http://quickfacts.census.gov/qfd/download_data.html
+  * DataSet.txt
+  * DataDict.txt
+  * FIPS_CountyName.txt
+  * DataFlags.txt
+  * FlagsDict.txt
+
+
+United States Internal Revenue Service (2009). Free County Income Data Downloads. SOI Tax Stats. Retrieved January 15, 2014, from http://www.irs.gov/uac/SOI-Tax-Stats---Free-County-Income-Data-Downloads
+  * 09incicsv.csv
+  * 09incidocguide.doc
+
+
+United States Internal Revenue Service (2009). Historic Table 2. Individual Income and Tax Data, by State and Size of Adjusted Gross Income. SOI Tax Stats. Retrieved January 15, 2014, from http://www.irs.gov/uac/SOI-Tax-Stats---Historic-Table-2
+  * 09in54cm.xls
+
+
+Tax Policy Center, Urban Institute and Brookings Institution. Historical Amount of Revenue by Source. Retrieved January 15, 2014, from http://www.taxpolicycenter.org/taxfacts/displayafact.cfm?Docid=203
+  * hist_receipt_source_amount.pdf
