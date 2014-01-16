@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!-- taxmap : https://github.com/lbracken/taxmap
+     :license: MIT, see LICENSE for more details.
+-->
+<html lang="en">
+  <head>
+   <!-- TODO: Insert BMX -->
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>{% block title %}{% endblock %}</title>    
+    <link rel="stylesheet" href="static/css/style.css">
+    {% block extra_style %}{% endblock %}
+  </head>
+
+  <body>  
+    <div id="bodyWrapper">    
+      <header>
+        <div id="header">
+          <h1>{% block header %}{% endblock %}</h1>           
+        </div>
+      </header>
+
+      {% block body %}{% endblock %}
+    
+    </div>
+    
+    <footer>
+      <div id="footer">
+        <div id="footer-inner">
+          © 2014 <a href="http://levibracken.com">Levi Bracken</a> &nbsp;&nbsp;|&nbsp;&nbsp; 
+          <a href="https://github.com/lbracken/taxmap">Fork me on GitHub</a>
+        </div>
+      </div>
+    </footer>
+
+    {% block scripts %}{% endblock %}
+    <!-- TODO: Insert GAE -->
+
+  </body>
+</html>
