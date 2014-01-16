@@ -8,6 +8,8 @@ United States Census Bureau (????). State & County QuickFacts. Retrieved January
 
 United States Internal Revenue Service (2009). Free County Income Data Downloads. SOI Tax Stats. Retrieved January 15, 2014, from http://www.irs.gov/uac/SOI-Tax-Stats---Free-County-Income-Data-Downloads
   * 09incicsv.csv
+    Modification: line 1836
+      35,13,NM,Doña Ana County --> 35,13,NM,Dona Ana County
   * 09incidocguide.doc
 
 
