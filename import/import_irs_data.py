@@ -44,12 +44,12 @@ def import_county_income_data(filename):
         region = {
             "state_abbrv" : columns[2].strip().lower(),
             "name"        : sanitize_name(columns[3]),
-            "num_returns"     : int(columns[4]),
-            "num_exemptions"  : int(columns[5]),
-            "total_agi"       : int(columns[6]) * multiplier,
-            "total_wages"     : int(columns[7]) * multiplier,
-            "total_dividends" : int(columns[8]) * multiplier,
-            "total_interest"  : int(columns[9]) * multiplier
+            "num_returns"    : int(columns[4]),
+            "num_exemptions" : int(columns[5]),
+            "agi"       : int(columns[6]) * multiplier,
+            "wages"     : int(columns[7]) * multiplier,
+            "dividends" : int(columns[8]) * multiplier,
+            "interest"  : int(columns[9]) * multiplier
         }
         
         # Upsert into the DB
@@ -61,7 +61,7 @@ def import_county_income_data(filename):
         regions_count += 1
         if verbose:
             print "%d) Region: %s (%s)\tAGI: %d" % (regions_count,\
-                    fips_code, region["name"], region["total_agi"])
+                    fips_code, region["name"], region["agi"])
 
     print "... data for %d regions was imported" % regions_count
 
