@@ -22,6 +22,8 @@ from flask import make_response
 from flask import render_template
 from flask import request
 
+from service import region_service
+
 app = Flask(__name__)
 verbose = False
 
@@ -29,6 +31,44 @@ verbose = False
 @app.route("/")
 def main_page():
     return render_template("index.html")
+
+
+@app.route("/determine_tax_map")
+def determine_tax_map():
+
+    # Read and validate request arguments
+    try:
+        zip = request.args.get("zip", "").strip().lower()
+        prgm_name = request.args.get("prgm_name", "").strip().lower()
+        prgm_cost = int(request.args.get("prgm_cost", 0))
+
+        # Ensure the request parameters are valid, otherwise return a 400
+        if len(zip) != 5 or prgm_cost < 1:
+            abort(400)
+
+        if verbose:
+            print ">>>>>>>>>>>>>>>>>>>>>> determine_tax_map"
+            print " * ZIP: %s" % zip
+            print " * Program Name: %s" % prgm_name
+            print " * Program Cost: %d" % prgm_cost
+
+    except Exception,e :
+        # If there are problems reading the request arguments, then
+        # the request is bad.  Return a 400 HTTP Status Code - Bad
+        # Request
+        if verbose:
+            print "  %s" % str(e)
+            traceback.print_exc() 
+        abort(400)
+
+    # Determine the tax map for this zip code
+    response = region_service.determine_tax_map(zip, prgm_cost)
+
+    if verbose:
+        print response
+        print "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+
+    return make_response(jsonify(response))
 
 
 def parse_args():

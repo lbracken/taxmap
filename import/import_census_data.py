@@ -65,7 +65,7 @@ def determine_region_type(fips_code):
     fips_code_int = int(fips_code)
 
     if fips_code_int == 0:
-        return "usa"
+        return "country"
     elif fips_code_int % 1000 == 0:
         return "state"
 

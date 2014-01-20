@@ -67,7 +67,7 @@ def calculate_taxes_paid():
         fips_code = region.get("_id")
         region_type = region.get("type")
 
-        if region_type == "usa":
+        if region_type == "country":
             agi = 0
             est_taxes = total_indiv_income_taxes_paid
 
