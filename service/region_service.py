@@ -7,10 +7,13 @@
     
     :license: MIT, see LICENSE for more details.
 """
+import json
 
 from db import mongo
 
 regions = None
+zip2fips = None
+zip2fips_file = "sources/other/zip2fips.json"
 
 
 def init_db():
@@ -173,16 +176,15 @@ def get_state_abbrv_for_fips(fips_code):
 
 
 def get_fips_code_from_zip(zip):
+    global zip2fips
 
-    # TOOD:  This is just a stubbed out implementation
-    # Still need to get a zip-to-fips mapping
-    if zip == "25840":
-        return "54019"  # Fayette County, WV
-    elif zip == "22207":
-        return "51013"  # Arlington, VA
+    if not zip2fips:
+        # If zip2fips hasnt' been initialized then read it from a file
+        json_data = open(zip2fips_file)
+        zip2fips = json.load(json_data)
 
-    return "08037"  # Eagle County, CO
+    return zip2fips.get(zip)
 
 
 # Initialize connection to DB when loading module
-init_db()    
+init_db()
