@@ -3,11 +3,43 @@
 {% block header %}Taxmap{% endblock %}
 
 {% block extra_style %}
+    <link rel="stylesheet" href="static/css/taxmap.css">
+    <link rel="stylesheet" href="static/css/smoothness/jquery-ui-1.10.0.custom.css">
 {% endblock %}
 
 {% block body %}
-  ...
+    <header>
+      <div id="header">
+        <div id="taxmapLogo">taxmap</div>
+        <div class="clearPanel"></div>
+      </div>
+    </header>
+
+    <div id="prjHeader">
+      ZIP Code: <input type="text" id="zip" maxlength="5"/>
+      Amount: <input type="text" id="prgm_cost" maxlength="10"/>
+      <button id="updateTaxmap">Go</button>      
+      <div class="clearPanel"></div>
+    </div>
+
+    <div id="content">
+      Content goes here...
+    </div>
+
 {% endblock %}
 
-{% block scripts %}    
+{% block scripts %}
+<!-- CDN Resources
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+-->
+
+    <!-- Local copies of jquery, from CDN -->
+    <script src="static/js/jquery.min.js" type="text/javascript"></script>
+    <script src="static/js/jquery-ui.min.js" type="text/javascript"></script>
+	<script src="static/js/d3.v3.min.js" type="text/javascript"></script>
+
+    <script src="static/js/taxmap.js" type="text/javascript"></script>
+  
 {% endblock %}

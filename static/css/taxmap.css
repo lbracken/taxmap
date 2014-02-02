@@ -1,0 +1,73 @@
+/* taxmap : https://github.com/lbracken/taxmap
+   :license: MIT, see LICENSE for more details.
+*/
+* {
+  margin: 0px;
+}
+
+html, body {
+  height: 100%;
+  padding: 0px;
+  margin: 0px;
+  background-color: #f5f5fb;
+}
+
+html {
+  font-family: Tahoma, Trebuchet MS, Helvetica, Arial;
+  font-size: .8em;
+}
+
+body {}
+
+h1 {
+  padding-bottom: .25em;
+  font-size: 1.7em;
+}
+
+A:link    {color: #76A0C9; text-decoration: none;}
+A:visited {color: #76A0C9; text-decoration: none;}
+A:hover   {color: #76A0C9; text-decoration: underline;}
+A:active  {color: #76A0C9; outline: none;}
+A:focus   {-moz-outline-style: none;}
+
+img {border: none;}
+.clearPanel {clear: both;}
+
+#header {
+	padding: .25em 1em .25em 1em;
+	background-color: #293134;
+	color: #e8e2b7;
+	font-weight: bold;
+}
+
+#prjHeader {
+	padding: 5px 10px 5px 20px;
+	margin-bottom: 1em;
+	border-bottom: 2px solid #555;
+	background-color: #678c9d;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+#zip {
+	width: 3.5em;
+	margin: 0em 1em 0em .25em;
+	font-size: 1.2em;
+}
+
+#prgm_cost {
+	width: 6.5em;
+	margin: 0em 1em 0em .25em;
+	font-size: 1.2em;
+}
+
+#footer {
+	width: 600px;
+	margin: auto;
+	text-align: center;
+	color: #666 !important;
+}
+
+#footer A:link, A:visited, A:hover, A:active {
+	color: #666 !important;
+}
