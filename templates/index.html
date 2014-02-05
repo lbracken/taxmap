@@ -16,14 +16,21 @@
     </header>
 
     <div id="prjHeader">
-      ZIP Code: <input type="text" id="zip" maxlength="5"/>
-      Amount: <input type="text" id="prgm_cost" maxlength="10"/>
-      <button id="updateTaxmap">Go</button>      
+      ZIP Code: <input type="text" id="zip" maxlength="5" autofocus value="25840"/>
+      Amount: <input type="text" id="prgm_cost" maxlength="10" value="100"/>
+      <button id="updateTaxmap">Go</button>
+      <img id="updateTaxmapLoading" src="static/images/loader.gif" style="display:none;" height="16px" width="16px"/>
       <div class="clearPanel"></div>
-    </div>
+      <div id="serverErrorMsg" style="display: none;">Error communicating with server.</div>
+    </div>    
 
-    <div id="content">
-      Content goes here...
+    <div id="content" style="display: none;">
+      <div id="mapContainer"></div>           
+      <div id="summaryContainer">
+        <div id="summaryHeader"></div>
+        <div id="summaryMessage"></div>
+      </div>      
+      <div class="clearPanel"></div>    
     </div>
 
 {% endblock %}

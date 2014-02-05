@@ -41,10 +41,11 @@ img {border: none;}
 }
 
 #prjHeader {
-	padding: 5px 10px 5px 20px;
-	margin-bottom: 1em;
-	border-bottom: 2px solid #555;
-	background-color: #678c9d;
+	width: 80%;
+	min-width: 900px;
+	padding: 20px;
+	margin: auto;
+	border-bottom: 1px dotted #CCC;
 	font-size: 1.2em;
 	font-weight: bold;
 }
@@ -60,6 +61,45 @@ img {border: none;}
 	margin: 0em 1em 0em .25em;
 	font-size: 1.2em;
 }
+
+#serverErrorMsg {
+	margin-top: 15px;
+	color: #FF0000;
+	font-weight: bold;
+}
+
+#content {
+	width: 80%;
+	min-width: 900px;
+	margin: 30px auto 30px auto;
+	border: 1px solid #eee;
+}
+
+#mapContainer {
+	float: left;
+	width: 65%;
+}
+
+#summaryContainer {
+	float: right;
+	width: 30%;
+	background-color: #CCC;
+	border-radius: 5px;
+	padding: 1em;
+}
+
+#summaryHeader {
+	font-size: 1.3em;
+	padding-bottom: .25em;
+	margin-bottom: 1.5em;
+	border-bottom: 1px dotted #FFF;
+}
+
+#summaryMessage {
+
+}
+
+
 
 #footer {
 	width: 600px;
