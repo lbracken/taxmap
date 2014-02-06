@@ -5,6 +5,8 @@
 // Constants
 var maxRegionsToShowByName = 5;
 
+var currData;
+
 // ****************************************************************************
 // *                                                                          *
 // *  Project Logic                                                           *
@@ -28,67 +30,88 @@ function updateTaxmap() {
 }
 
 function onDetermineTaxMapSuccess(response) {
+	currData = response;
 	$("#updateTaxmap").show();
 	$("#updateTaxmapLoading").hide();
 	$("#content").fadeIn();
+	$("#showMoreDetails").show();
+
+	// Lots of string concatination in this function.  Looks like this is
+	// the fastet method.  See: http://jsperf.com/string-concatenation/14
 
 	// Create the Summary Header
-	var summaryHeader = "PRGM NAME"; // TOOD: Change to response.prgm_name
+	var summaryHeader = "PRGM NAME"; // TOOD: Change to currData.prgm_name
 	summaryHeader += " = $";
-	summaryHeader += abbreviateNumber(response.prgm_cost);
+	summaryHeader += abbreviateNumber(currData.prgm_cost);
 	summaryHeader += " / year";
 	$("#summaryHeader").text(summaryHeader);
 
 	// Create the Summary Message
-	var summaryMessage = "It would take the income taxes of ";
+	var summaryMessage = "";
+	if (currData.regions.length === 1) {
 
-	if (response.resolution === "country") {
-		// TODO:
-
-	} else {
-
-		// Single Region...
-		if (response.regions.length === 1) {
-			summaryMessage += response.regions[0].name;
-
-		// Multiple Regions, show them all...
-		} else if (response.regions.length < maxRegionsToShowByName) {
-			for (var ctr=0; ctr < response.regions.length-1; ctr++) {
-				summaryMessage += (ctr > 0) ? ", " : "";
-				summaryMessage += response.regions[ctr].name;
-			}
-			summaryMessage += " and "
-			summaryMessage += response.regions[response.regions.length-1].name;
-
-		// Multiple Regions, only show a few...
+		if (currData.resolution === "country") {
+			// TODO
 		} else {
-			for (var ctr=0; ctr < maxRegionsToShowByName; ctr++) {
-				summaryMessage += (ctr > 0) ? ", " : "";
-				summaryMessage += response.regions[ctr].name;
-			}
-			summaryMessage += " and ";
-			summaryMessage += (response.regions.length - maxRegionsToShowByName);
-			summaryMessage += " other";
+			summaryMessage += "The income taxes of ";
+			summaryMessage += currData.regions[0].name;
+			summaryMessage += (currData.resolution === "state") ? "" : " County";
+			summaryMessage += " could pay for ";
+		}
+	} else {
+		summaryMessage += "It would take the combined income taxes of ";
+
+		var regionsToShowByName = Math.min(maxRegionsToShowByName, currData.regions.length);
+		for (var ctr=0; ctr < regionsToShowByName - 1; ctr++) {
+			summaryMessage += (ctr > 0) ? ", " : "";
+			summaryMessage += getRegionSpan(currData.regions[ctr]);
 		}
 
-		if (response.resolution === "county") {
-			summaryMessage += (response.regions.length > 1) ? " counties" : " county";
-		} else if (response.resolution === "state") {
-			summaryMessage += (response.regions.length > 1) ? " states" : "";
+		summaryMessage += " and ";
+		if (currData.regions.length > maxRegionsToShowByName+1) {
+			summaryMessage += (currData.regions.length - maxRegionsToShowByName);
+			summaryMessage += " other";
+			summaryMessage += (currData.resolution === "state") ? " states" : " counties";			
+		} else {
+			summaryMessage += getRegionSpan(currData.regions[regionsToShowByName-1]);			
+			summaryMessage += (currData.resolution === "state") ? "" : " counties";
 		}
+
+		summaryMessage += " to pay for ";
 	}
 
-	summaryMessage += " to pay for the ";
-	summaryMessage += "PRGM NAME"; // TOOD: Change to response.prgm_name
-	summaryMessage += " budget."	
+	summaryMessage += "PRGM NAME"; // TOOD: Change to currData.prgm_name
+	summaryMessage += "."	
 	$("#summaryMessage").html(summaryMessage);
-
 }
 
 function onDetermineTaxMapFailure(jqxhr, textStatus, error) {
+	currData = null;
 	$("#updateTaxmap").show();
 	$("#updateTaxmapLoading").hide();
 	$("#serverErrorMsg").show();
+}
+
+function getRegionSpan(region) {
+
+	var regionSpan = "<span class='regionSpan' title='Taxes Paid: $";
+	regionSpan += formatInteger(region.est_taxes);
+	regionSpan += "  Population: ";
+	regionSpan += formatInteger(region.population);
+	regionSpan += "'>";
+	regionSpan += region.name;
+	regionSpan += "</span>"
+	
+	return regionSpan;
+}
+
+function showMoreDetails() {
+
+	if (!currData) {
+		return;
+	}
+
+	$("#showMoreDetails").hide();
 }
 
 // ****************************************************************************
@@ -96,6 +119,11 @@ function onDetermineTaxMapFailure(jqxhr, textStatus, error) {
 // *  Misc                                                                    *
 // *                                                                          *
 // ****************************************************************************
+
+function formatInteger(number) {
+	// From: http://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
+    return parseInt(number).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
 function abbreviateNumber(number) {
 
@@ -128,4 +156,5 @@ $(document).ready(function() {
 
 	// Setup controls
 	$("#updateTaxmap").click(updateTaxmap);
+	$("#showMoreDetails").click(showMoreDetails);
 });

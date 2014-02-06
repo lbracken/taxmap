@@ -71,8 +71,7 @@ img {border: none;}
 #content {
 	width: 80%;
 	min-width: 900px;
-	margin: 30px auto 30px auto;
-	border: 1px solid #eee;
+	margin: 15px auto 30px auto;
 }
 
 #mapContainer {
@@ -83,20 +82,32 @@ img {border: none;}
 #summaryContainer {
 	float: right;
 	width: 30%;
-	background-color: #CCC;
-	border-radius: 5px;
+	background-color: #bae4b3;
+	box-shadow: 3px 3px 3px #CCC;
 	padding: 1em;
 }
 
+#summaryContainer A:link, A:visited, A:hover, A:active {
+	color: #666 !important;
+}
+
 #summaryHeader {
-	font-size: 1.3em;
+	font-size: 28px;
+	font-family: 'Yanone Kaffeesatz';
+	text-rendering: optimizelegibility;
 	padding-bottom: .25em;
-	margin-bottom: 1.5em;
+	margin-bottom: .5em;
 	border-bottom: 1px dotted #FFF;
 }
 
 #summaryMessage {
+	font-size: 1.2em;
+	margin: 0em 0em 2em 0em;
+}
 
+.regionSpan {
+	border-bottom: 1px dotted #000;
+	cursor: default;
 }
 
 
