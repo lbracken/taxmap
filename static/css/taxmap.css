@@ -81,12 +81,14 @@ img {border: none;}
 }
 
 .counties {
-  fill: none;
+  stroke: #FFF;
+  stroke-width: .2px;
+  stroke-linejoin: round;
 }
 
 .states {
-  fill: none;
-  stroke: #fff;
+  stroke: #666;
+  stroke-width: .75px;
   stroke-linejoin: round;
 }
 

@@ -7,6 +7,9 @@ var maxRegionsToShowByName = 5;
 
 var currData;
 
+var onGetDataDownloaded = null;
+var geoData = null;
+
 
 // ****************************************************************************
 // *                                                                          *
@@ -21,12 +24,25 @@ function renderMap() {
 	//   * http://bl.ocks.org/mbostock/4699541
 	//   * http://bl.ocks.org/mbostock/4707858
 
-	// TODO: This currently only works for country resolution results,
-	// need to also support country and state resolution responses.
+	// If there's no result set, then this function can't execute
+	if (!currData) {
+		return;
+	}
+
+	// Confirm that geoData is available, or register for
+	// this function to be called once it's ready. 
+	if (!geoData) {
+		onGetDataDownloaded = renderMap;
+		return;
+	}
+
+	// TODO: Support country resolution responses...
+
+	// TOOD: Provide some level of tooltip info on each county/state
 
 	// TODO: dynamically get these values based upon view area
-	var mapWidth = 700;	
-	var mapHeight = 500;
+	var mapWidth = 800;	
+	var mapHeight = 600;
 
 	// Define a projection for the map
 	var projection = d3.geo.albersUsa()
@@ -44,29 +60,76 @@ function renderMap() {
 		.attr("width", mapWidth)
 		.attr("height", mapHeight);
 
-    // Asynchronously load the GeoJSON data from the server
-    d3.json("static/data/us-counties.json", function(us) {
+	// Determine which regions will be rendered
+    var showCounties = (currData.resolution === "county");
+	var showStates = showCounties || (currData.resolution === "state");
 
-		// Bind data and create one path per GeoJSON feature
-		var counties = map.append("g")
-			.attr("class", "counties")
-			.selectAll("path")
-				.data(topojson.feature(us, us.objects.counties).features)
-			.enter().append("path")
-				.attr("d", path)
-				.style("fill", styleRegion);
-		
-		var states = map.append("path")
-			.datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
-			.attr("class", "states")
-			.attr("d", path);
+	// Render all US counties
+	// TODO: Only render counties in the appropriate/parent state?
+ 	if (showCounties) {	 		
+		var counties = renderRegions(map, path, geoData.objects.counties,
+			"counties", true);   		
+	}
 
-		$("#mapContainer").fadeIn();
-	});
+	// Render all US States.  Render this after counties so state
+	// borders are on top and clear.
+	if (showStates) {			
+		var states = renderRegions(map, path, geoData.objects.states,
+			"states", !showCounties);
+	}
+	
+	// If showing counties, then zoom into the appropriate/parent state
+	if (showCounties) {
+		// Determine the parent state containing the selected counties. Once
+		// found, get the corresponding bounding box from the SVG map.
+		var stateId = parseInt(currData.fips_code.substring(0, 2));
+		for (var ctr=0; ctr < geoData.objects.states.geometries.length; ctr++) {
+			if (geoData.objects.states.geometries[ctr].id == stateId) {			
+				
+				var boundingBox = path.bounds(states[0][ctr].__data__);
+				zoomToRegion(states, boundingBox, projection, mapWidth, mapHeight);
+				zoomToRegion(counties, boundingBox, projection, mapWidth, mapHeight);
+				break;
+			}
+		}
+	}
+
+	$("#mapContainer").show();
 }
 
 
-function styleRegion(region) {
+function renderRegions(map, path, regions, className, fillSelected) {
+
+	// Add a group ("g") element to the map. Then for each region
+	// in the given regions list, render shape path data ("d"). Ensure
+	// each path gets styled.
+	return map.append("g")
+		.attr("class", className)
+		.selectAll("path")
+			.data(topojson.feature(geoData, regions).features)
+		.enter().append("path")
+			.attr("d", path)
+			.style("fill", function(region) {
+				return determineRegionFill(region, fillSelected);
+			});	
+}
+
+
+function zoomToRegion(regions, b, projection, width, height) {
+	// Use translate to zoom into the given bounding box (b)
+	regions.transition().duration(2250).attr("transform",
+		"translate(" + projection.translate() + ")"
+		+ "scale(" + .95 / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height) + ")"
+		+ "translate(" + -(b[1][0] + b[0][0]) / 2 + "," + -(b[1][1] + b[0][1]) / 2 + ")");
+}
+
+
+function determineRegionFill(region, fillSelected) {
+
+	if (!fillSelected) {
+		return "none";
+	}
+
 	// If the region is specified in currData, then shade it in.
 
 	// Temp only!!!!
@@ -245,6 +308,16 @@ function abbreviateNumber(number) {
 }
 
 
+function geoDataReady(error, us_json) {
+	geoData = us_json;
+
+	// See if some operation is waiting on this data
+	if (onGetDataDownloaded) {
+		onGetDataDownloaded();
+	}	
+}
+
+
 $(document).ready(function() {
 
 	// Basic UI setup
@@ -253,4 +326,9 @@ $(document).ready(function() {
 	// Setup controls
 	$("#updateTaxmap").click(updateTaxmap);
 	$("#showMoreDetails").click(showMoreDetails);
+
+	// Start downloading geo data immediately
+	var q = queue()
+    	.defer(d3.json, "static/data/us.json")
+    	.await(geoDataReady);
 });
