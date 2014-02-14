@@ -147,7 +147,7 @@ def determine_tax_map(zip, prgm_cost):
     # Build an index of regions to enable quick lookups client-side
     regions_idx = {}
     for region in regions:
-        regions_idx[region.get("_id")] = True
+        regions_idx[int(region.get("_id"))] = True
 
     return {
         "zip" : zip,
