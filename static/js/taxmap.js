@@ -64,10 +64,25 @@ function renderMap() {
     var showCounties = (currData.resolution === "county");
 	var showStates = showCounties || (currData.resolution === "state");
 
-	// Render all US counties
-	// TODO: Only render counties in the appropriate/parent state?
- 	if (showCounties) {	 		
-		var counties = renderRegions(map, path, geoData.objects.counties,
+	// Render counties
+ 	if (showCounties) {
+
+ 		// To improve performance, only render the regions in the
+ 		// state that we'll zoom into.
+ 		var stateFIPS = parseInt(currData.regions[0]._id / 1000) * 1000;
+ 		var c = geoData.objects.counties.geometries;
+ 		var countiesToRender = {
+ 			"type" : "GeometryCollection",
+ 			"geometries" : []
+ 		}; 		
+ 		
+ 		for (var ctr=0; ctr < c.length; ctr++) {
+ 			if (c[ctr].id >= stateFIPS && c[ctr].id < stateFIPS+1000) {
+ 				countiesToRender.geometries.push(c[ctr]);
+ 			}
+ 		}
+
+		var counties = renderRegions(map, path, countiesToRender,
 			"counties", true);   		
 	}
 
