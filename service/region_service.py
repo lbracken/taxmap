@@ -142,7 +142,12 @@ def determine_tax_map(zip, prgm_cost):
                 regions.append(counties[idx])
                 total_est_taxes += counties[idx].get("est_taxes")
                 total_population += counties[idx].get("population")
-                idx += 1 
+                idx += 1
+
+    # Build an index of regions to enable quick lookups client-side
+    regions_idx = {}
+    for region in regions:
+        regions_idx[region.get("_id")] = True
 
     return {
         "zip" : zip,
@@ -151,7 +156,8 @@ def determine_tax_map(zip, prgm_cost):
         "resolution" : resolution,
         "total_est_taxes" : total_est_taxes,
         "total_population" : total_population,
-        "regions" : regions
+        "regions" : regions,
+        "regions_idx" : regions_idx
         # Consider adding other info here, like AGI...
     }
 

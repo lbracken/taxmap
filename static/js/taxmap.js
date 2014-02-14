@@ -130,17 +130,8 @@ function determineRegionFill(region, fillSelected) {
 		return "none";
 	}
 
-	// If the region is specified in currData, then shade it in.
-
-	// Temp only!!!!
-	// TODO: Don't iterate over the entire result set. The response should return
-	// some data structure that makes it simple to quickly check for an id...
-	for (var ctr=0; ctr < currData.regions.length; ctr++) {
-		if (region.id == currData.regions[ctr]["_id"]) {
-			return "red";
-		}
-	}
-	return "#DDD";
+	// If the region is specified in currData, then shade it.
+	return currData.regions_idx[region.id] ? "red" : "#DDD";
 }
 
 
