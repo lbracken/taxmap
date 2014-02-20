@@ -123,7 +123,23 @@ img {border: none;}
 	cursor: default;
 }
 
+#mapTooltip {
+	position: absolute;
+	background-color: #222;
+	color: #FFF;
+	padding: .5em;
+	box-shadow: 3px 3px 3px #CCC;
+}
 
+#mapTooltip .title {
+	font-size: 1.25em;
+	font-weight: bold;
+}
+
+#mapTooltip hr {
+	border: 1px dotted #CCC;
+	margin: 5px 0px 5px 0px;
+}
 
 #footer {
 	width: 600px;

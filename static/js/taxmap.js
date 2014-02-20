@@ -10,6 +10,10 @@ var currData;
 var onGetDataDownloaded = null;
 var geoData = null;
 
+var mapWidth = 800;	
+var mapHeight = 600;
+var mapOffsetL = 0;
+var mapOffsetT = 0;
 
 // ****************************************************************************
 // *                                                                          *
@@ -41,8 +45,8 @@ function renderMap() {
 	// TOOD: Provide some level of tooltip info on each county/state
 
 	// TODO: dynamically get these values based upon view area
-	var mapWidth = 800;	
-	var mapHeight = 600;
+	//var mapWidth = 800;	
+	//var mapHeight = 600;
 
 	// Define a projection for the map
 	var projection = d3.geo.albersUsa()
@@ -124,9 +128,41 @@ function renderRegions(map, path, regions, className, fillSelected) {
 			.data(topojson.feature(geoData, regions).features)
 		.enter().append("path")
 			.attr("d", path)
-			.style("fill", function(region) {
-				return determineRegionFill(region, fillSelected);
-			});	
+			.style("fill",   function(region) { return determineRegionFill(region, fillSelected);})
+			.on("mouseover", function(region) { return onMouseOverRegion(region, map);})
+    		.on("mouseout",  function(region) { return onMouseOutRegion(region, map);})
+			.on("mousemove", function(region) { return onMouseMoveRegion(region, map);});
+}
+
+
+function onMouseOverRegion(region, map) {
+	if (isRegionSelected(region)) {
+		var region = currData.regions[currData.regions_idx[region.id]];
+		$("#mapTooltip").html(
+			"<span class='title'>" + region.name + "</span><br/><hr/>" +
+			"Taxes Paid: " + formatInteger(region.est_taxes) + "<br/>" +
+			"Population: " + formatInteger(region.population));
+		$("#mapTooltip").show();
+		mapOffsetL = parseInt(map[0][0].offsetLeft) + 15;
+		mapOffsetT = parseInt(map[0][0].offsetTop) + 15;
+	}
+}
+
+
+function onMouseOutRegion(region, map) {
+	$("#mapTooltip").hide();
+	mapOffsetL = 0;
+	mapOffsetT = 0;
+}
+
+
+function onMouseMoveRegion(region, map) {
+	if(mapOffsetL && mapOffsetT) {
+		var mouse = d3.mouse(map.node());
+		var tooltipTop = parseInt(mouse[1]) + mapOffsetT;
+		var tooltipLeft = parseInt(mouse[0]) + mapOffsetL;
+		$("#mapTooltip").css({top: tooltipTop, left: tooltipLeft});
+	}	
 }
 
 
@@ -146,7 +182,11 @@ function determineRegionFill(region, fillSelected) {
 	}
 
 	// If the region is specified in currData, then shade it.
-	return currData.regions_idx[region.id] ? "red" : "#DDD";
+	return isRegionSelected(region) ? "red" : "#DDD";
+}
+
+function isRegionSelected(region) {
+	return currData.regions_idx[region.id] >= 0;
 }
 
 
