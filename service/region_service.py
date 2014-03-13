@@ -79,7 +79,7 @@ def get_county(fips_code):
     return state_data
 
 
-def determine_tax_map(zip, prgm_cost):
+def determine_tax_map(zip, prgm_name, prgm_cost):
 
     fips_code = get_fips_code_from_zip(zip)
 
@@ -153,6 +153,7 @@ def determine_tax_map(zip, prgm_cost):
 
     return {
         "zip" : zip,
+        "prgm_name" : prgm_name,
         "fips_code" : fips_code,
         "prgm_cost" : prgm_cost,
         "resolution" : resolution,

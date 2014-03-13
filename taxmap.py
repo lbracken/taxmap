@@ -62,7 +62,7 @@ def determine_tax_map():
         abort(400)
 
     # Determine the tax map for this zip code
-    response = region_service.determine_tax_map(zip, prgm_cost)
+    response = region_service.determine_tax_map(zip, prgm_name, prgm_cost)
 
     if verbose:
         print response

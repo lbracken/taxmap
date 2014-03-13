@@ -6,6 +6,7 @@
 var maxRegionsToShowByName = 5;
 
 var currData;
+var selectedPrgm = null;
 
 var onGetDataDownloaded = null;
 var geoData = null;
@@ -202,7 +203,7 @@ function renderSummary() {
 	// the fastet method.  See: http://jsperf.com/string-concatenation/14
 
 	// Create the Summary Header
-	var summaryHeader = "PRGM NAME"; // TOOD: Change to currData.prgm_name
+	var summaryHeader = currData.prgm_name;
 	summaryHeader += " = $";
 	summaryHeader += abbreviateNumber(currData.prgm_cost);
 	summaryHeader += " / year";
@@ -242,7 +243,7 @@ function renderSummary() {
 		summaryMessage += " to pay for ";
 	}
 
-	summaryMessage += "PRGM NAME"; // TOOD: Change to currData.prgm_name
+	summaryMessage += currData.prgm_name;
 	summaryMessage += "."	
 	$("#summaryMessage").html(summaryMessage);
 	
@@ -283,7 +284,13 @@ function showMoreDetails() {
 function updateTaxmap() {
 
 	var zip = $("#zip").val().trim();
-	var prgmCost = $("#prgm_cost").val().trim() * 1003000;
+
+	if (!zip || !selectedPrgm) {
+		return;
+	}
+
+	var prgmCost = selectedPrgm.cost;
+	var prgmName = selectedPrgm.name;
 
 	// TODO: Validate this data...
 
@@ -295,7 +302,9 @@ function updateTaxmap() {
 
 	// Call the server to determine the tax map
 	$.getJSON("determine_tax_map",
-		{"zip" : zip, "prgm_cost" : prgmCost},
+		{"zip" : zip,
+		 "prgm_cost" : prgmCost,
+		 "prgm_name" : prgmName},
 		onDetermineTaxMapSuccess).fail(
 		onDetermineTaxMapFailure);
 }
@@ -317,6 +326,76 @@ function onDetermineTaxMapFailure(jqxhr, textStatus, error) {
 	$("#updateTaxmapLoading").hide();
 	$("#serverErrorMsg").show();
 }
+
+
+// Setup list of programs and their cost; populate
+// and attach needed listeners.
+function setupProgramList(prgms) {
+	$("#prgm_list").focus();
+	$("#prgm_list").autocomplete({
+		minLength : 0,
+		delay : 0,
+		source : prgms,
+		focus: onAutoCompleteFocus,
+		select: onAutoCompleteSelection
+	}).data("ui-autocomplete")._renderItem = renderAutoCompleteItem;
+
+	$("#prgm_list").keydown(function(event){
+		if (event.keyCode == '13') {
+			updateTaxmap();
+		}
+	});
+	enableProgramList();
+}
+
+
+function onAutoCompleteFocus(event, ui) {
+	
+	// So we can't rely on the default focus behavior because that would place 
+	// the entire Program (name, cost) in the search box when an item is focused.
+	// However, overriding the default allows mouse events to trigger focus, and
+	// that doesn't play well with IE or FF.  If user has the cursor over an
+	// item then typing is effectively disabled as focus keeps getting stolen.
+	// So check that this was triggered by a key event.
+	if(0 == event.keyCode) {
+		return;
+	}	
+	
+	$("#prgm_list").val(ui.item.label);
+	return false;
+}
+
+
+function onAutoCompleteSelection(event, ui) {
+	$("#prgm_list").val(ui.item.label);
+	selectedPrgm = ui.item;
+	updateTaxmap();
+	return false;
+}
+
+
+function renderAutoCompleteItem(ul, prgm) {
+	return $("<li></li>")
+		.data("item.autocomplete", prgm)
+		.append("<a><span class='prgm_list-label'>" + prgm.label + "</span></a>")
+		.appendTo(ul);
+}
+
+
+function enableProgramList() {
+	$("#prgm_list").val("");
+	$("#prgm_list").autocomplete({disabled: false});
+	$("#prgm_list").removeAttr("disabled"); 
+	$("#prgm_list").focus();
+}
+
+
+function disableProgramList() {
+	$("#prgm_list").autocomplete({disabled: true});
+	$("#prgm_list").autocomplete("close");
+	$("#prgm_list").attr("disabled", "disabled");
+}
+
 
 // ****************************************************************************
 // *                                                                          *
@@ -366,6 +445,9 @@ function geoDataReady(error, us_json) {
 
 $(document).ready(function() {
 
+	// Request values for programs list autocomplete
+	$.getJSON("/static/data/programs.json", setupProgramList);
+	
 	// Basic UI setup
 	$("input[type=submit], button").button();	
 
