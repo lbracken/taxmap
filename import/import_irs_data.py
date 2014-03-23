@@ -63,6 +63,11 @@ def import_county_income_data(filename):
             print "%d) Region: %s (%s)\tAGI: %d" % (regions_count,\
                     fips_code, region["name"], region["agi"])
 
+    # Set country information
+    regions.update(
+        {"type" : "country"},
+        {"$set" : {"name" : "United States of America"}})
+
     print "... data for %d regions was imported" % regions_count
 
 

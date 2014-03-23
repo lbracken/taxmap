@@ -92,9 +92,11 @@ def determine_tax_map(zip, prgm_name, prgm_cost):
     # paid within the country.  If so, just return data on the country.
     country = get_country()
     if prgm_cost >= country.get("est_taxes"):
+        country["_id"] = "0"
         resolution = "country"
         total_est_taxes = country.get("est_taxes")
         total_population = country.get("population")
+        regions.append(country)
 
     # Otherwise, check if the cost of the program is larger than all of
     # the taxes paid within the given state.  If so, then determine the

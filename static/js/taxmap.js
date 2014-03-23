@@ -16,6 +16,10 @@ var mapHeight = 600;
 var mapOffsetL = 0;
 var mapOffsetT = 0;
 
+var mapFilledRegionColor = "#6E9058";
+var mapDefaultRegionColor = "#DDD";
+
+
 // ****************************************************************************
 // *                                                                          *
 // *  Map Logic                                                               *
@@ -28,7 +32,8 @@ function renderMap() {
 	//   * http://bl.ocks.org/mbostock/4060606
 	//   * http://bl.ocks.org/mbostock/4699541
 	//   * http://bl.ocks.org/mbostock/4707858
-
+	//   * http://bl.ocks.org/mbostock/4108203
+	
 	// If there's no result set, then this function can't execute
 	if (!currData) {
 		return;
@@ -40,10 +45,6 @@ function renderMap() {
 		onGetDataDownloaded = renderMap;
 		return;
 	}
-
-	// TODO: Support country resolution responses...
-
-	// TOOD: Provide some level of tooltip info on each county/state
 
 	// TODO: dynamically get these values based upon view area
 	//var mapWidth = 800;	
@@ -65,43 +66,16 @@ function renderMap() {
 		.attr("width", mapWidth)
 		.attr("height", mapHeight);
 
-	// Determine which regions will be rendered
-    var showCounties = (currData.resolution === "county");
-	var showStates = showCounties || (currData.resolution === "state");
+	if (currData.resolution === "county") {
 
-	// Render counties
- 	if (showCounties) {
+		// First render counties, then render states so state borders are on
+		// top and clear.  Then zoom in to the given state.
+		var counties = renderCountyRegions(map, path);
+		var states = renderStateRegions(map, path, false);
 
- 		// To improve performance, only render the regions in the
- 		// state that we'll zoom into.
- 		var stateFIPS = parseInt(currData.regions[0]._id / 1000) * 1000;
- 		var c = geoData.objects.counties.geometries;
- 		var countiesToRender = {
- 			"type" : "GeometryCollection",
- 			"geometries" : []
- 		}; 		
- 		
- 		for (var ctr=0; ctr < c.length; ctr++) {
- 			if (c[ctr].id >= stateFIPS && c[ctr].id < stateFIPS+1000) {
- 				countiesToRender.geometries.push(c[ctr]);
- 			}
- 		}
-
-		var counties = renderRegions(map, path, countiesToRender,
-			"counties", true);   		
-	}
-
-	// Render all US States.  Render this after counties so state
-	// borders are on top and clear.
-	if (showStates) {			
-		var states = renderRegions(map, path, geoData.objects.states,
-			"states", !showCounties);
-	}
-	
-	// If showing counties, then zoom into the appropriate/parent state
-	if (showCounties) {
 		// Determine the parent state containing the selected counties. Once
 		// found, get the corresponding bounding box from the SVG map.
+		$("#mapContainer").show();
 		var stateId = parseInt(currData.fips_code.substring(0, 2));
 		for (var ctr=0; ctr < geoData.objects.states.geometries.length; ctr++) {
 			if (geoData.objects.states.geometries[ctr].id == stateId) {			
@@ -112,13 +86,49 @@ function renderMap() {
 				break;
 			}
 		}
-	}
 
-	$("#mapContainer").show();
+	} else if (currData.resolution === "state") {
+		var states = renderStateRegions(map, path, true);
+		$("#mapContainer").fadeIn();
+
+	} else if (currData.resolution === "country") {
+		var country = renderCountry(map, path);
+		$("#mapContainer").fadeIn();
+	}	
 }
 
 
-function renderRegions(map, path, regions, className, fillSelected) {
+
+function renderCountyRegions(map, path) {
+
+	// There are a lot of counties in the US.  To improve performance,
+	// only render the counties in the state that we'll zoom into.
+	var stateFIPS = parseInt(currData.regions[0]._id / 1000) * 1000;
+	var c = geoData.objects.counties.geometries;
+	var countiesToRender = {
+		"type" : "GeometryCollection",
+		"geometries" : []
+	}; 		
+	
+	for (var ctr=0; ctr < c.length; ctr++) {
+		if (c[ctr].id >= stateFIPS && c[ctr].id < stateFIPS+1000) {
+			countiesToRender.geometries.push(c[ctr]);
+		}
+	}
+
+	return renderRegions(map, path, countiesToRender, "counties", true); 
+}
+
+
+function renderStateRegions(map, path, fillSelectedRegions) {
+	// Render all of the US states
+	return renderRegions(map, path, geoData.objects.states,	"states", fillSelectedRegions);
+}
+
+
+function renderRegions(map, path, regions, className, fillSelectedRegions) {
+
+	// Renders the given regions, which may be a collection counties or states
 
 	// Add a group ("g") element to the map. Then for each region
 	// in the given regions list, render shape path data ("d"). Ensure
@@ -129,20 +139,29 @@ function renderRegions(map, path, regions, className, fillSelected) {
 			.data(topojson.feature(geoData, regions).features)
 		.enter().append("path")
 			.attr("d", path)
-			.style("fill",   function(region) { return determineRegionFill(region, fillSelected);})
-			.on("mouseover", function(region) { return onMouseOverRegion(region, map);})
-    		.on("mouseout",  function(region) { return onMouseOutRegion(region, map);})
-			.on("mousemove", function(region) { return onMouseMoveRegion(region, map);});
+			.style("fill",   function(region) { return determineRegionFill(region.id, fillSelectedRegions);})
+			.on("mouseover", function(region) { return onMouseOverRegion(region.id, map);})
+    		.on("mouseout",  function(region) { return onMouseOutRegion(map);})
+			.on("mousemove", function(region) { return onMouseMoveRegion(map);});
 }
 
+	
+function renderCountry(map, path) {
+	// Render a map of the US
+	return map.append("path")
+      .datum(topojson.feature(geoData, geoData.objects.land))
+      .attr("d", path)
+      .attr("class", "country")
+      .style("fill", mapFilledRegionColor)
+	  .on("mouseover", function() { return onMouseOverRegion(0, map);})
+	  .on("mouseout",  function() { return onMouseOutRegion(map);})
+	  .on("mousemove", function() { return onMouseMoveRegion(map);});
+}
 
-function onMouseOverRegion(region, map) {
-	if (isRegionSelected(region)) {
-		var region = currData.regions[currData.regions_idx[region.id]];
-		$("#mapTooltip").html(
-			"<span class='title'>" + region.name + "</span><br/><hr/>" +
-			"Taxes Paid: " + formatInteger(region.est_taxes) + "<br/>" +
-			"Population: " + formatInteger(region.population));
+function onMouseOverRegion(id, map) {
+	var region = getRegionFromCurrData(id);
+	if (region) {
+		$("#mapTooltip").html(createTooltipHTML(region));
 		$("#mapTooltip").show();
 		mapOffsetL = parseInt(map[0][0].offsetLeft) + 15;
 		mapOffsetT = parseInt(map[0][0].offsetTop) + 15;
@@ -150,14 +169,14 @@ function onMouseOverRegion(region, map) {
 }
 
 
-function onMouseOutRegion(region, map) {
+function onMouseOutRegion(map) {
 	$("#mapTooltip").hide();
 	mapOffsetL = 0;
 	mapOffsetT = 0;
 }
 
 
-function onMouseMoveRegion(region, map) {
+function onMouseMoveRegion(map) {
 	if(mapOffsetL && mapOffsetT) {
 		var mouse = d3.mouse(map.node());
 		var tooltipTop = parseInt(mouse[1]) + mapOffsetT;
@@ -176,20 +195,15 @@ function zoomToRegion(regions, b, projection, width, height) {
 }
 
 
-function determineRegionFill(region, fillSelected) {
+function determineRegionFill(id, fillSelectedRegions) {
 
-	if (!fillSelected) {
+	if (!fillSelectedRegions) {
 		return "none";
 	}
 
 	// If the region is specified in currData, then shade it.
-	return isRegionSelected(region) ? "red" : "#DDD";
+	return isRegionInCurrData(id) ? mapFilledRegionColor : mapDefaultRegionColor;
 }
-
-function isRegionSelected(region) {
-	return currData.regions_idx[region.id] >= 0;
-}
-
 
 // ****************************************************************************
 // *                                                                          *
@@ -204,10 +218,10 @@ function renderSummary() {
 
 	// Create the Summary Header
 	var summaryHeader = currData.prgm_name;
-	summaryHeader += " = $";
+	summaryHeader += "<br/> ($";
 	summaryHeader += abbreviateNumber(currData.prgm_cost);
-	summaryHeader += " / year";
-	$("#summaryHeader").text(summaryHeader);
+	summaryHeader += " / year)";
+	$("#summaryHeader").html(summaryHeader);
 
 	// Create the Summary Message
 	var summaryMessage = "";
@@ -248,7 +262,7 @@ function renderSummary() {
 	$("#summaryMessage").html(summaryMessage);
 	
 	$("#showMoreDetails").show();
-	$("#summaryContainer").fadeIn(2000);
+	$("#summaryContainer").fadeIn();
 }
 
 
@@ -402,6 +416,28 @@ function disableProgramList() {
 // *  Misc                                                                    *
 // *                                                                          *
 // ****************************************************************************
+
+// Checks if the given id is in the currData index
+function isRegionInCurrData(id) {
+	// If the id is less than 1,000 then it's a state code.  Convert to 5-digit FIPS
+	id = (currData.resolution === "state") ? id * 1000: id;
+	return currData.regions_idx[id] >= 0;
+}
+
+// Gets the region with the given id from currData
+function getRegionFromCurrData(id) {
+	// If the id is less than 1,000 then it's a state code.  Convert to 5-digit FIPS
+	id = (currData.resolution === "state") ? id * 1000: id;
+	return currData.regions[currData.regions_idx[id]];
+}
+
+
+function createTooltipHTML(region) {
+	return "<span class='title'>" + region.name + "</span><br/><hr/>" +
+			"Taxes Paid: $" + formatInteger(region.est_taxes) + "<br/>" +
+			"Population: " + formatInteger(region.population);
+}
+
 
 function formatInteger(number) {
 	// From: http://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
