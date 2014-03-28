@@ -148,6 +148,19 @@ img {border: none;}
 	margin: 0em 0em 2em 0em;
 }
 
+#summaryDetails table {
+	border: 1px;
+}
+
+#summaryDetails table th{
+}
+
+#summaryDetails table td {
+	vertical-align: top;
+	text-align: right;
+	padding: 3px;
+}
+
 .regionSpan {
 	border-bottom: 1px dotted #000;
 	cursor: default;

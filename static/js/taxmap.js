@@ -46,7 +46,7 @@ function renderMap() {
 
 	// Determine the size of the map, based upon its container size
 	var mapWidth = $("#mapContainer").width();
-	var mapHeight = mapWidth * .75;	// 4:3 viewing ratio
+	var mapHeight = mapWidth * .6;	// 5:3 viewing ratio
 
 	// Define a projection for the map
 	var projection = d3.geo.albersUsa()
@@ -156,6 +156,7 @@ function renderCountry(map, path) {
 	  .on("mousemove", function() { return onMouseMoveRegion(map);});
 }
 
+
 function onMouseOverRegion(id, map) {
 	var region = getRegionFromCurrData(id);
 	if (region) {
@@ -232,7 +233,7 @@ function renderSummary() {
 			summaryMessage += "All federal income taxes paid in the US still couldn't pay for ";
 		} else {
 			summaryMessage += "The federal income taxes of ";
-			summaryMessage += currData.regions[0].name;
+			summaryMessage += getRegionSpan(currData.regions[0]);
 			summaryMessage += (currData.resolution === "state") ? "" : " County";
 			summaryMessage += " could pay for ";
 		}
@@ -273,7 +274,7 @@ function renderSummary() {
 
 function getRegionSpan(region) {
 
-	var regionSpan = "<span class='regionSpan' title='Taxes Paid: $";
+	var regionSpan = "<span class='regionSpan' title='Income Taxes Paid: $";
 	regionSpan += formatInteger(region.est_taxes);
 	regionSpan += "  Population: ";
 	regionSpan += formatInteger(region.population);
@@ -291,7 +292,26 @@ function showMoreDetails() {
 		return;
 	}
 
+	var detailsTable = "<table><tr>";
+	detailsTable += "<th>Region</th>";
+	detailsTable += "<th>Income Taxes Paid</th>";
+	detailsTable += "<th>Population</th>";
+	detailsTable += "</tr>";
+
+	for (var ctr=0; ctr < currData.regions.length; ctr++) {
+		detailsTable += "<tr><td>";
+		detailsTable += currData.regions[ctr].name;
+		detailsTable += "</td><td>$";
+		detailsTable += formatInteger(currData.regions[ctr].est_taxes);
+		detailsTable += "</td><td>";
+		detailsTable += formatInteger(currData.regions[ctr].population);
+		detailsTable += "</td></tr>";
+	}
+
+	detailsTable += "</table>";
+
 	$("#showMoreDetails").hide();
+	$("#summaryDetails").html(detailsTable);
 }
 
 // ****************************************************************************
@@ -439,7 +459,7 @@ function getRegionFromCurrData(id) {
 
 function createTooltipHTML(region) {
 	return "<span class='title'>" + region.name + "</span><br/><hr/>" +
-			"Taxes Paid: $" + formatInteger(region.est_taxes) + "<br/>" +
+			"Income Taxes Paid: $" + formatInteger(region.est_taxes) + "<br/>" +
 			"Population: " + formatInteger(region.population);
 }
 
@@ -490,7 +510,7 @@ $(document).ready(function() {
 	$.getJSON("/static/data/programs.json", setupProgramList);
 	
 	// Basic UI setup
-	$("input[type=submit], button").button(); 
+	$("input[type=submit], button").button();
 
 	// Setup controls
 	$("#updateTaxmap").click(updateTaxmap);
