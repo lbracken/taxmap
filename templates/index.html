@@ -17,9 +17,10 @@
 
     <div id="prjHeader">
       ZIP Code: <input type="text" id="zip" maxlength="5" autofocus value="25840"/>
-      <input type="text" id="prgm_list" maxlength="10"/>
+      Program: <input type="text" id="prgm_list" maxlength="10"/>
       <button id="updateTaxmap">Go</button>
       <img id="updateTaxmapLoading" src="static/images/loader.gif" style="display:none;" height="16px" width="16px"/>
+      <button id="shareUrl">Share!</button>
       <div class="clearPanel"></div>
       <div id="serverErrorMsg" style="display: none;">Error communicating with server.</div>
     </div>    
@@ -37,6 +38,12 @@
       </div>      
       <div class="clearPanel"></div>    
     </div>
+
+    <div id="shareUrlDialog" style="display: none;">
+      Copy this URL to share with others!<br/>
+      <input type="text" id="share_url"/>
+    </div> 
+
 
 {% endblock %}
 

@@ -339,6 +339,10 @@ function updateTaxmap() {
 	$("#mapContainer").hide();
 	$("#summaryContainer").hide();
 
+	// Set current selection into URL
+	window.location.hash = "#zip=" + zip + "&prgm=" + selectedPrgm.id;
+	$("#shareUrl").removeAttr("disabled");
+
 	// Call the server to determine the tax map
 	$.getJSON("determine_tax_map",
 		{"zip" : zip,
@@ -385,6 +389,22 @@ function setupProgramList(prgms) {
 		}
 	});
 	enableProgramList();
+
+	// Check if a zip code and program id is provided in the URL.
+	// If so, then display that data...
+	var zipCode = getParameterByName("zip");
+	var prgmId = formatInteger(getParameterByName("prgm"));
+	if (zipCode && prgmId) {
+		$("#zip").val(zipCode);
+		for (var ctr=0; ctr < prgms.length; ctr++) {
+			if (prgms[ctr].id == prgmId) {
+				$("#prgm_list").val(prgms[ctr].label);
+				selectedPrgm = prgms[ctr];
+				updateTaxmap();
+				break;
+			}
+		}
+	}
 }
 
 
@@ -435,6 +455,38 @@ function disableProgramList() {
 	$("#prgm_list").attr("disabled", "disabled");
 }
 
+// ****************************************************************************
+// *                                                                          *
+// *  Dialogs                                                                    *
+// *                                                                          *
+// ****************************************************************************
+
+function setupShareUrlDialog() {
+	$("#shareUrlDialog").dialog({
+		autoOpen: false,
+		modal: false,
+		resizable: false,
+		show: {effect:"fadeIn", duration:1000},
+		open: function() {
+			$(this).dialog("widget").find(".ui-dialog-titlebar").hide();
+		}
+	});
+}
+
+function showShareUrlDialog() {
+	// Smoothly scroll to the top of the page
+	$("html, body").animate({scrollTop: 0});
+	$("#shareUrlDialog").dialog("open");
+	$("#shareUrlDialog").dialog("option", "width", 300);
+	$("#shareUrlDialog").dialog("option", "height", 75);
+	$("#share_url").val(document.URL);
+	
+}
+
+function hidesetupShareUrlDialog() {
+	$("#shareUrlDialog").dialog("close");
+}
+
 
 // ****************************************************************************
 // *                                                                          *
@@ -448,6 +500,7 @@ function isRegionInCurrData(id) {
 	id = (currData.resolution === "state") ? id * 1000: id;
 	return currData.regions_idx[id] >= 0;
 }
+
 
 // Gets the region with the given id from currData
 function getRegionFromCurrData(id) {
@@ -494,6 +547,20 @@ function abbreviateNumber(number) {
 }
 
 
+// http://stackoverflow.com/questions/2090551/parse-query-string-in-javascript
+function getParameterByName(name) {
+    var query = window.location.hash.substring(1);
+    var vars = query.split('&');
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (decodeURIComponent(pair[0]) == name) {
+            return decodeURIComponent(pair[1]);
+        }
+    }
+    return "";
+}
+
+
 function geoDataReady(error, us_json) {
 	geoData = us_json;
 
@@ -511,10 +578,16 @@ $(document).ready(function() {
 	
 	// Basic UI setup
 	$("input[type=submit], button").button();
+	$("#shareLink").button({icons: {primary: "ui-icon-link"}, text: false});
+	setupShareUrlDialog();
 
 	// Setup controls
 	$("#updateTaxmap").click(updateTaxmap);
 	$("#showMoreDetails").click(showMoreDetails);
+
+	$("#shareUrl").click(showShareUrlDialog);
+	$("#shareUrl").attr("disabled", "disabled");
+	$("#shareUrl").button({icons: {primary: "ui-icon-link"}, text: false});
 
 	// Start downloading geo data immediately
 	var q = queue()

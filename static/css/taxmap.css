@@ -88,7 +88,7 @@ img {border: none;}
 	height: 300px;  /* For IE6 -- since it doesn't support max-height */
 }
 
-#updateTaxmap {
+#prjHeader button {
 	font-size: 1.25;
 	padding: 3px;
 }
@@ -182,6 +182,15 @@ img {border: none;}
 #mapTooltip hr {
 	border: 1px dotted #CCC;
 	margin: 5px 0px 5px 0px;
+}
+
+#shareUrlDialog {
+	/* Width, Height must get set in JS for dialogs */
+}
+
+#share_url {
+	width: 250px;
+	margin-top: 8px;	
 }
 
 #footer {
