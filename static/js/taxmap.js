@@ -228,15 +228,15 @@ function renderSummary() {
 	if (currData.regions.length === 1) {
 
 		if (currData.resolution === "country") {
-			// TODO
+			summaryMessage += "All federal income taxes paid in the US still couldn't pay for ";
 		} else {
-			summaryMessage += "The income taxes of ";
+			summaryMessage += "The federal income taxes of ";
 			summaryMessage += currData.regions[0].name;
 			summaryMessage += (currData.resolution === "state") ? "" : " County";
 			summaryMessage += " could pay for ";
 		}
 	} else {
-		summaryMessage += "It would take the combined income taxes of ";
+		summaryMessage += "It would take the combined federal income taxes of ";
 
 		var regionsToShowByName = Math.min(maxRegionsToShowByName, currData.regions.length);
 		for (var ctr=0; ctr < regionsToShowByName - 1; ctr++) {
