@@ -11,8 +11,6 @@ var selectedPrgm = null;
 var onGetDataDownloaded = null;
 var geoData = null;
 
-var mapWidth = 800;	
-var mapHeight = 600;
 var mapOffsetL = 0;
 var mapOffsetT = 0;
 
@@ -46,9 +44,9 @@ function renderMap() {
 		return;
 	}
 
-	// TODO: dynamically get these values based upon view area
-	//var mapWidth = 800;	
-	//var mapHeight = 600;
+	// Determine the size of the map, based upon its container size
+	var mapWidth = $("#mapContainer").width();
+	var mapHeight = mapWidth * .75;	// 4:3 viewing ratio
 
 	// Define a projection for the map
 	var projection = d3.geo.albersUsa()
@@ -334,7 +332,7 @@ function updateTaxmap() {
 function onDetermineTaxMapSuccess(response) {
 	currData = response;
 	$("#updateTaxmap").show();
-	$("#updateTaxmapLoading").hide();	
+	$("#updateTaxmapLoading").stop(true, true).hide();	
 
 	renderMap();
 	renderSummary();
@@ -344,7 +342,7 @@ function onDetermineTaxMapSuccess(response) {
 function onDetermineTaxMapFailure(jqxhr, textStatus, error) {
 	currData = null;
 	$("#updateTaxmap").show();
-	$("#updateTaxmapLoading").hide();
+	$("#updateTaxmapLoading").stop(true, true).hide();
 	$("#serverErrorMsg").show();
 }
 
@@ -492,7 +490,7 @@ $(document).ready(function() {
 	$.getJSON("/static/data/programs.json", setupProgramList);
 	
 	// Basic UI setup
-	$("input[type=submit], button").button();	
+	$("input[type=submit], button").button(); 
 
 	// Setup controls
 	$("#updateTaxmap").click(updateTaxmap);

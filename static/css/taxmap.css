@@ -42,31 +42,28 @@ img {border: none;}
 }
 
 #prjHeader {
-	width: 80%;
+	width: 90%;
 	min-width: 900px;
 	padding: 20px;
 	margin: auto;
 	border-bottom: 1px dotted #CCC;
-	font-size: 1.2em;
+	font-size: 1.25em;
 	font-weight: bold;
+	color: #666;
 }
 
 #zip {
-	width: 3.5em;
+	width: 3.25em;
 	margin: 0em 1em 0em .25em;
-	font-size: 1.2em;
-}
-
-#prgm_cost {
-	width: 6.5em;
-	margin: 0em 1em 0em .25em;
-	font-size: 1.2em;
+	padding: 6px;
+	font-size: 1.25em;
 }
 
 #prgm_list {
 	width: 450px;
 	margin: 0em 1em 0em .25em;
-	font-size: 1.2em;
+	padding: 6px;
+	font-size: 1.25em;
 }
 
 .prgm_list-label {
@@ -91,6 +88,11 @@ img {border: none;}
 	height: 300px;  /* For IE6 -- since it doesn't support max-height */
 }
 
+#updateTaxmap {
+	font-size: 1.25;
+	padding: 3px;
+}
+
 #serverErrorMsg {
 	margin-top: 15px;
 	color: #FF0000;
@@ -98,7 +100,7 @@ img {border: none;}
 }
 
 #content {
-	width: 80%;
+	width: 90%;
 	min-width: 900px;
 	margin: 15px auto 30px auto;
 }
@@ -133,7 +135,7 @@ img {border: none;}
 }
 
 #summaryHeader {
-	font-size: 28px;
+	font-size: 22px;
 	font-family: 'Yanone Kaffeesatz';
 	text-rendering: optimizelegibility;
 	padding-bottom: .25em;
@@ -171,7 +173,7 @@ img {border: none;}
 
 #footer {
 	width: 600px;
-	margin: auto;
+	margin: 25px auto 0px auto;
 	text-align: center;
 	color: #666 !important;
 }
