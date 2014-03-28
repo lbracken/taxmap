@@ -39,7 +39,7 @@ def determine_tax_map():
     # Read and validate request arguments
     try:
         zip = request.args.get("zip", "").strip().lower()
-        prgm_name = request.args.get("prgm_name", "").strip().lower()
+        prgm_name = request.args.get("prgm_name", "").strip()
         prgm_cost = int(request.args.get("prgm_cost", 0))
 
         # Ensure the request parameters are valid, otherwise return a 400

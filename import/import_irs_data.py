@@ -73,7 +73,7 @@ def import_county_income_data(filename):
 
 def sanitize_name(name):
     #name u(name).encode('utf-8')
-    return name.lower().replace("county", "").strip()
+    return name.lower().replace("county", "").strip().title()
 
 
 def determine_fips_code(state_code, county_code):

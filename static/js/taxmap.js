@@ -220,7 +220,10 @@ function renderSummary() {
 	var summaryHeader = currData.prgm_name;
 	summaryHeader += "<br/> ($";
 	summaryHeader += abbreviateNumber(currData.prgm_cost);
-	summaryHeader += " / year)";
+	if(selectedPrgm && !selectedPrgm.one_time_cost) {
+		summaryHeader += " / year";	
+	}
+	summaryHeader += ")";
 	$("#summaryHeader").html(summaryHeader);
 
 	// Create the Summary Message
@@ -255,6 +258,10 @@ function renderSummary() {
 		}
 
 		summaryMessage += " to pay for ";
+
+		if(selectedPrgm && selectedPrgm.name_prefix) {
+			summaryMessage += selectedPrgm.name_prefix + " "
+		}
 	}
 
 	summaryMessage += currData.prgm_name;
