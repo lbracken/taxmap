@@ -1,0 +1,16 @@
+[
+	{"name" : "Department of Defense", "cost" : 667557000000, "label" : "Department of Defense ($667 billion)"},
+	{"name" : "NASA", "cost" : 18777000000, "label" : "NASA ($18.7 billion)"},
+	{"name" : "A single F-22 Fighter Jet", "cost" : 227000000, "label" : "A single F-22 Fighter Jet ($227 million)"},
+	{"name" : "National Endowment for the Arts", "cost" : 155000000, "label" : "National Endowment for the Arts ($155 million)"},
+	{"name" : "National Science Foundation", "cost" : 9579000000, "label" : "National Science Foundation ($9.5 billion)"},
+	{"name" : "EPA", "cost" : 14754000000, "label" : "EPA ($1.47 billion)"},
+	{"name" : "Dept Homeland Security", "cost" : 46001000000, "label" : "Dept Homeland Security ($46 billion)"},
+
+
+	{"name" : "Test Small", "cost" : 1, "label" : "Test Small ($1)"},
+	{"name" : "Test Medium-Small", "cost" : 500000000, "label" : "Test Small ($500M)"},
+	{"name" : "Test Medium", "cost" : 1000000000, "label" : "Test Medium ($1B)"},
+	{"name" : "Test Large", "cost" : 10000000000, "label" : "Test Large ($10B)"},
+	{"name" : "Test X-Large", "cost" : 1000000000000, "label" : "Test X-Large ($1T)"}	
+]
