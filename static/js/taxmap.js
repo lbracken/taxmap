@@ -248,8 +248,8 @@ function renderSummary() {
 		}
 
 		summaryMessage += " and ";
-		if (currData.regions.length > maxRegionsToShowByName+1) {
-			summaryMessage += (currData.regions.length - maxRegionsToShowByName);
+		if (currData.regions.length > maxRegionsToShowByName) {
+			summaryMessage += (currData.regions.length - maxRegionsToShowByName + 1);
 			summaryMessage += " other";
 			summaryMessage += (currData.resolution === "state") ? " states" : " counties";			
 		} else {
