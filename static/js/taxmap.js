@@ -458,33 +458,37 @@ function disableProgramList() {
 
 // ****************************************************************************
 // *                                                                          *
-// *  Dialogs                                                                    *
+// *  Dialogs                                                                 *
 // *                                                                          *
 // ****************************************************************************
 
 function setupShareUrlDialog() {
 	$("#shareUrlDialog").dialog({
 		autoOpen: false,
+		closeOnEscape: true,
+		draggable: false,
 		modal: false,
 		resizable: false,
-		show: {effect:"fadeIn", duration:1000},
-		open: function() {
-			$(this).dialog("widget").find(".ui-dialog-titlebar").hide();
-		}
+		position: { my: "right top", at: "right bottom", of: "#shareUrl" },
+		show: {effect:"fadeIn", duration:1000}
 	});
+	// Select the contents of the Share URL Textbox
+	$("#share_url").focus(function() { $(this).select(); } );
 }
+
 
 function showShareUrlDialog() {
 	// Smoothly scroll to the top of the page
 	$("html, body").animate({scrollTop: 0});
 	$("#shareUrlDialog").dialog("open");
-	$("#shareUrlDialog").dialog("option", "width", 300);
-	$("#shareUrlDialog").dialog("option", "height", 75);
+	$("#shareUrlDialog").dialog("option", "width", 375);
+	$("#shareUrlDialog").dialog("option", "height", 95);
 	$("#share_url").val(document.URL);
 	
 }
 
-function hidesetupShareUrlDialog() {
+
+function hideShareUrlDialog() {
 	$("#shareUrlDialog").dialog("close");
 }
 
