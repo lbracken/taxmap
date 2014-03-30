@@ -268,6 +268,7 @@ function renderSummary() {
 	$("#summaryMessage").html(summaryMessage);
 	
 	$("#showMoreDetails").show();
+	$("#summaryDetails").html("");
 	$("#summaryContainer").fadeIn();
 }
 
@@ -292,14 +293,14 @@ function showMoreDetails() {
 		return;
 	}
 
-	var detailsTable = "<table><tr>";
+	var detailsTable = "<table><thead><tr>";
 	detailsTable += "<th>Region</th>";
 	detailsTable += "<th>Income Taxes Paid</th>";
 	detailsTable += "<th>Population</th>";
-	detailsTable += "</tr>";
+	detailsTable += "</tr></thead><tbody>";
 
 	for (var ctr=0; ctr < currData.regions.length; ctr++) {
-		detailsTable += "<tr><td>";
+		detailsTable += "<tr><td class='regionName'>";
 		detailsTable += currData.regions[ctr].name;
 		detailsTable += "</td><td>$";
 		detailsTable += formatInteger(currData.regions[ctr].est_taxes);
@@ -308,7 +309,7 @@ function showMoreDetails() {
 		detailsTable += "</td></tr>";
 	}
 
-	detailsTable += "</table>";
+	detailsTable += "</tbody></table>";
 
 	$("#showMoreDetails").hide();
 	$("#summaryDetails").html(detailsTable);

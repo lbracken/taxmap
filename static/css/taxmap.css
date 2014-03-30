@@ -149,16 +149,37 @@ img {border: none;}
 }
 
 #summaryDetails table {
-	border: 1px;
+	border-collapse: collapse;
+	background: #eee;
+	width: 99%;
 }
 
-#summaryDetails table th{
+#summaryDetails col:nth-child(1) {
+	text-align: left !important;
 }
 
-#summaryDetails table td {
+#summaryDetails th, td {
+	border: 1px solid #999;
+	padding: 0.5rem;
 	vertical-align: top;
 	text-align: right;
-	padding: 3px;
+}
+
+#summaryDetails th {
+	background: #6E9058;
+	text-align: left;
+}
+
+#summaryDetails .regionName {
+	text-align: left;
+}
+
+#summaryDetails tbody tr:nth-child(odd) {
+	background: #ddd;
+}
+
+#summaryDetails tbody tr:hover {
+  background: #666;
 }
 
 .regionSpan {
