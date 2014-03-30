@@ -6,19 +6,22 @@
 }
 
 html, body {
-  height: 100%;
   padding: 0px;
   margin: 0px;
   background-color: #f5f5fb;
 }
 
 html {
+  position: relative;
+  min-height: 100%;
   -webkit-font-smoothing: antialiased;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: .75em;
 }
 
-body {}
+body {
+	margin: 0 0 35px; /* bottom = footer height */
+}
 
 h1 {
   padding-bottom: .25em;
@@ -215,7 +218,12 @@ img {border: none;}
 }
 
 #footer {
-	width: 600px;
+	/* Sticky footer: http://mystrd.at/modern-clean-css-sticky-footer/ */
+	position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 35px;
+	width: 100%;
 	margin: 25px auto 0px auto;
 	text-align: center;
 	color: #666 !important;
