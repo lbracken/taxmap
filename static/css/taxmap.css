@@ -208,6 +208,30 @@ img {border: none;}
 	margin: 5px 0px 5px 0px;
 }
 
+#welcomeDialog {
+	/* Width, Height must get set in JS for dialogs */
+	padding: 1em;
+	background-color: #ffffcc;
+}
+
+#welcomeDialog .left{
+	float: left;
+	width: 175px;
+	font-size: 18px;
+	font-family: 'Yanone Kaffeesatz';
+	text-rendering: optimizelegibility;
+	text-align: center;
+	color: #666;
+}
+
+#welcomeDialog .right {
+	float: right;
+	width: 425px;
+	font-size: 20px;
+	font-family: 'Yanone Kaffeesatz';
+	text-rendering: optimizelegibility;
+}
+
 #shareUrlDialog {
 	/* Width, Height must get set in JS for dialogs */
 }

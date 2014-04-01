@@ -257,18 +257,18 @@ function renderSummary() {
 		}
 
 		summaryMessage += " to pay for ";
-
-		if(selectedPrgm && selectedPrgm.name_prefix) {
-			summaryMessage += selectedPrgm.name_prefix + " "
-		}
 	}
+
+	if(selectedPrgm && selectedPrgm.name_prefix) {
+		summaryMessage += selectedPrgm.name_prefix + " "
+	}	
 
 	summaryMessage += currData.prgm_name;
 	summaryMessage += "."	
 	$("#summaryMessage").html(summaryMessage);
 	
 	$("#showMoreDetails").show();
-	$("#summaryDetails").html("");
+	$("#summaryDetails").empty();
 	$("#summaryContainer").fadeIn();
 }
 
@@ -334,6 +334,7 @@ function updateTaxmap() {
 
 	// TODO: Validate this data...
 
+	hideWelcomeDialog();
 	$("#updateTaxmap").hide();
 	$("#updateTaxmapLoading").fadeIn();
 	$("#serverErrorMsg").hide();
@@ -375,7 +376,6 @@ function onDetermineTaxMapFailure(jqxhr, textStatus, error) {
 // Setup list of programs and their cost; populate
 // and attach needed listeners.
 function setupProgramList(prgms) {
-	$("#prgm_list").focus();
 	$("#prgm_list").autocomplete({
 		minLength : 0,
 		delay : 0,
@@ -384,11 +384,8 @@ function setupProgramList(prgms) {
 		select: onAutoCompleteSelection
 	}).data("ui-autocomplete")._renderItem = renderAutoCompleteItem;
 
-	$("#prgm_list").keydown(function(event){
-		if (event.keyCode == '13') {
-			updateTaxmap();
-		}
-	});
+	$("#zip").keydown(onFormKeyDown);
+	$("#prgm_list").keydown(onFormKeyDown);
 	enableProgramList();
 
 	// Check if a zip code and program id is provided in the URL.
@@ -405,6 +402,15 @@ function setupProgramList(prgms) {
 				break;
 			}
 		}
+	} else {
+		showWelcomeDialog();
+	}
+}
+
+
+function onFormKeyDown(event) {
+	if (event.keyCode == '13') {
+		updateTaxmap();
 	}
 }
 
@@ -445,8 +451,7 @@ function renderAutoCompleteItem(ul, prgm) {
 function enableProgramList() {
 	$("#prgm_list").val("");
 	$("#prgm_list").autocomplete({disabled: false});
-	$("#prgm_list").removeAttr("disabled"); 
-	$("#prgm_list").focus();
+	$("#prgm_list").removeAttr("disabled");
 }
 
 
@@ -461,6 +466,37 @@ function disableProgramList() {
 // *  Dialogs                                                                 *
 // *                                                                          *
 // ****************************************************************************
+
+function setupWelcomeDialog() {
+	$("#welcomeDialog").dialog({
+		autoOpen: false,
+		closeOnEscape: true,
+		draggable: false,
+		modal: false,
+		resizable: false,
+		focus : function () {$("#zip").focus();},
+		position: { my: "left+15 top+15", at: "left bottom", of: "#zip" },
+		show: {effect:"fadeIn", duration:1000},
+		open: function() {
+			$(this).dialog("widget").find(".ui-dialog-titlebar").hide();
+		}
+	});
+}
+
+
+function showWelcomeDialog() {
+	// Smoothly scroll to the top of the page
+	$("html, body").animate({scrollTop: 0});
+	$("#welcomeDialog").dialog("open");	
+	$("#welcomeDialog").dialog("option", "width", 690);
+	
+}
+
+
+function hideWelcomeDialog() {
+	$("#welcomeDialog").dialog("close");
+}
+
 
 function setupShareUrlDialog() {
 	$("#shareUrlDialog").dialog({
@@ -584,6 +620,7 @@ $(document).ready(function() {
 	// Basic UI setup
 	$("input[type=submit], button").button();
 	$("#shareLink").button({icons: {primary: "ui-icon-link"}, text: false});
+	setupWelcomeDialog();
 	setupShareUrlDialog();
 
 	// Setup controls

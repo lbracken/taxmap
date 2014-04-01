@@ -16,7 +16,7 @@
     </header>
 
     <div id="prjHeader">
-      ZIP Code: <input type="text" id="zip" maxlength="5" autofocus value="25840"/>
+      ZIP Code: <input type="text" id="zip" maxlength="5" autofocus/>
       Program: <input type="text" id="prgm_list" maxlength="10"/>
       <button id="updateTaxmap">Go</button>
       <img id="updateTaxmapLoading" src="static/images/loader.gif" style="display:none;" height="16px" width="16px"/>
@@ -39,11 +39,23 @@
       <div class="clearPanel"></div>    
     </div>
 
-    <div id="shareUrlDialog" style="display: none;">
-      Copy this URL to share with others!<br/>
-      <input type="text" id="share_url"/>
-    </div> 
+    <div id="welcomeDialog" style="display: none;">
+      <div class="left">
+        <!-- Awesome arrow image from http://mediamilitia.com/arrows-182-free-vectors-and-brushes/ -->
+        <img src="static/images/arrow.png" width="150" height"125" alt="Get Started!"/>
+        <p>Enter your ZIP and select a program to get started</p>
+      </div>
+      <div class="right">
+        <p>A million here, a billion there. The cost of various government programs is nearly incomprehensible.<p><br/>
 
+        <p>This visualization helps to provide some perspective about how much income tax you and your neighbors pay to cover various expenditures (income tax makes up nearly half of all federal revenues).</p>
+      </div>
+      <div class="clear"></div>
+    </div>
+
+    <div id="shareUrlDialog" style="display: none;" title="Copy this URL to share with others!">
+        <input type="text" id="share_url" readonly="readonly"/>
+    </div>
 
 {% endblock %}
 
