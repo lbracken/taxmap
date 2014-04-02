@@ -615,7 +615,7 @@ function geoDataReady(error, us_json) {
 $(document).ready(function() {
 
 	// Request values for programs list autocomplete
-	$.getJSON("/static/data/programs.json", setupProgramList);
+	$.getJSON("static/data/programs.json", setupProgramList);
 	
 	// Basic UI setup
 	$("input[type=submit], button").button();
