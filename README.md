@@ -14,4 +14,6 @@ taxmap is built as a Flask application. To run:
 
 The WebUI (and web service) is then available at http://localhost:5000.
 
-Persistence is handled by mongoDB.  Be sure to update settings.cfg with your mongoDB configuration.  Why use mongoDB for such a simple application?  No good reason other than mongoDB is already installed and used on the server where taxmap is live hosted.
+Persistence is handled by mongoDB.  Be sure to update settings.cfg with your mongoDB configuration.  Why use mongoDB for such a simple application?  No good reason other than mongoDB is already installed and used on the server where taxmap is live hosted.  To populate mongoDB with data, run the following shell script.
+
+    $ ./loadData.sh
