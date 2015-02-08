@@ -14,7 +14,7 @@
 """
 
 import ConfigParser
-
+import os
 import pymongo
 
 
@@ -29,11 +29,16 @@ def init_config():
     """
     global db_host, db_port
 
-    config = ConfigParser.SafeConfigParser()
-    config.read("settings.cfg")
+    # If Docker has set an env variable for the MongoDB host, then use that and
+    # the default port. Otherwise use the value set in settings.cfg.
+    db_host = os.environ.get("DB_PORT_27017_TCP_ADDR")
+    db_port = 27017
 
-    db_host = config.get("mongo", "db_host")
-    db_port = config.getint("mongo", "db_port")  
+    if db_host is None:
+        config = ConfigParser.SafeConfigParser()
+        config.read("settings.cfg")
+        db_host = config.get("mongo", "db_host")
+        db_port = config.getint("mongo", "db_port")  
 
 
 def get_mongodb_connection(collection_name):
