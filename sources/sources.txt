@@ -1,4 +1,4 @@
-United States Census Bureau (????). State & County QuickFacts. Retrieved January 15, 2014, from http://quickfacts.census.gov/qfd/download_data.html
+United States Census Bureau (2013). State & County QuickFacts. Retrieved February 22, 2015, from http://quickfacts.census.gov/qfd/download_data.html
   * DataSet.txt
   * DataDict.txt
   * FIPS_CountyName.txt

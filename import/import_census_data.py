@@ -41,8 +41,8 @@ def import_quickfacts_data(filename):
         # Data row format is: FIPS_CODE, ...., POPULATION, ...
         fips_code = columns[0]
         region = {
-            # 2010 Population is listed in column:6
-            "population" : int(columns[6]),
+            # 2013 Population is listed in column:2
+            "population" : int(columns[2]),
             "type" : determine_region_type(fips_code)
         }
 
