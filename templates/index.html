@@ -18,9 +18,9 @@
     <div id="prjHeader">
       ZIP Code: <input type="text" id="zip" maxlength="5" autofocus/>
       Program: <input type="text" id="prgm_list" maxlength="10"/>
-      <button id="updateTaxmap">Go</button>
+      <button id="updateTaxmap">Map It!</button>
       <img id="updateTaxmapLoading" src="static/images/loader.gif" style="display:none;" height="16px" width="16px"/>
-      <button id="shareUrl">Share!</button>
+      <button id="shareUrl">Share</button>
       <div class="clearPanel"></div>
       <div id="serverErrorMsg" style="display: none;">Error communicating with server.</div>
     </div>    
@@ -53,20 +53,20 @@
       <div class="clear"></div>
     </div>
 
-    <div id="shareUrlDialog" style="display: none;" title="Copy this URL to share with others!">
+    <div id="shareUrlDialog" style="display: none;" title="Copy this URL to share.">
         <input type="text" id="share_url" readonly="readonly"/>
     </div>
 
 {% endblock %}
 
 {% block scripts %}
-
+<!--
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-
-    <!-- Local copies of jquery from CDN --> <!--
+-->
+    <!-- Local copies of jquery from CDN -->
     <script src="static/js/jquery.min.js" type="text/javascript"></script>
-    <script src="static/js/jquery-ui.min.js" type="text/javascript"></script> -->
+    <script src="static/js/jquery-ui.min.js" type="text/javascript"></script> 
 
     <script src="static/js/d3.v3.min.js" type="text/javascript"></script>
     <script src="static/js/topojson.v1.min.js"></script>

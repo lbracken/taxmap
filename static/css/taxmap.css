@@ -14,9 +14,10 @@ html, body {
 html {
   position: relative;
   min-height: 100%;
-  -webkit-font-smoothing: antialiased;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: .75em;
+
+  font-family: 'Open Sans', sans-serif;
+  font-size: 0.95em;
+  font-weight: 400;  
 }
 
 body {
@@ -39,32 +40,48 @@ img {border: none;}
 
 #header {
 	padding: .25em 1em .25em 1em;
-	background-color: #293134;
-	color: #e8e2b7;
-	font-weight: bold;
+	background-color: #4CAF50;
+	color: #000;
+	font: 1.2em;
+}
+
+#header {
+	padding: 0.25em 1em 0.25em 1em;
+	border-bottom: 5px solid #388E3C;
+	background-color: #4CAF50;
+	color: #FFF;
+	font-size: 1.25em;
 }
 
 #prjHeader {
 	width: 90%;
-	min-width: 900px;
-	padding: 20px;
+	min-width: 1024px;
+	padding: 1em;
 	margin: auto;
 	border-bottom: 1px dotted #CCC;
 	font-size: 1.25em;
-	font-weight: bold;
-	color: #666;
+	color: #727272;
+}
+
+#prjHeader  * {	
+	vertical-align: middle;
+}
+
+#prjHeader button {
+	font-size: 0.95em;
+	padding: 3px;
 }
 
 #zip {
 	width: 3.25em;
-	margin: 0em 1em 0em .25em;
+	margin: 0em 1em 0em .2em;
 	padding: 6px;
 	font-size: 1.25em;
 }
 
 #prgm_list {
 	width: 450px;
-	margin: 0em 1em 0em .25em;
+	margin: 0em 1em 0em .2em;
 	padding: 6px;
 	font-size: 1.25em;
 }
@@ -91,20 +108,15 @@ img {border: none;}
 	height: 300px;  /* For IE6 -- since it doesn't support max-height */
 }
 
-#prjHeader button {
-	font-size: 1.25;
-	padding: 3px;
-}
-
 #serverErrorMsg {
 	margin-top: 15px;
 	color: #FF0000;
-	font-weight: bold;
+	font-weight: 600;
 }
 
 #content {
 	width: 90%;
-	min-width: 900px;
+	min-width: 1024px;
 	margin: 15px auto 30px auto;
 }
 
@@ -120,7 +132,7 @@ img {border: none;}
 }
 
 .states {
-  stroke: #666;
+  stroke: #727272;
   stroke-width: .75px;
   stroke-linejoin: round;
 }
@@ -128,19 +140,17 @@ img {border: none;}
 #summaryContainer {
 	float: right;
 	width: 30%;
-	background-color: #FFD08E;
-	box-shadow: 3px 3px 3px #CCC;
+	background-color: #FFECB3;
+	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 	padding: 1em;
 }
 
 #summaryContainer A:link, A:visited, A:hover, A:active {
-	color: #666 !important;
+	color: #727272 !important;
 }
 
 #summaryHeader {
 	font-size: 22px;
-	font-family: 'Yanone Kaffeesatz';
-	text-rendering: optimizelegibility;
 	padding-bottom: .25em;
 	margin-bottom: .5em;
 	border-bottom: 1px dotted #FFF;
@@ -153,7 +163,7 @@ img {border: none;}
 
 #summaryDetails table {
 	border-collapse: collapse;
-	background: #eee;
+	background: #F5F5F5;
 	width: 99%;
 }
 
@@ -169,7 +179,7 @@ img {border: none;}
 }
 
 #summaryDetails th {
-	background: #6E9058;
+	background: #4CAF50;
 	text-align: left;
 }
 
@@ -178,11 +188,7 @@ img {border: none;}
 }
 
 #summaryDetails tbody tr:nth-child(odd) {
-	background: #ddd;
-}
-
-#summaryDetails tbody tr:hover {
-  background: #666;
+	background: #FAFAFA;
 }
 
 .regionSpan {
@@ -200,7 +206,7 @@ img {border: none;}
 
 #mapTooltip .title {
 	font-size: 1.25em;
-	font-weight: bold;
+	font-weight: 600;
 }
 
 #mapTooltip hr {
@@ -210,26 +216,19 @@ img {border: none;}
 
 #welcomeDialog {
 	/* Width, Height must get set in JS for dialogs */
-	padding: 1em;
-	background-color: #ffffcc;
+	background-color: #FFECB3;
 }
 
 #welcomeDialog .left{
 	float: left;
 	width: 175px;
-	font-size: 18px;
-	font-family: 'Yanone Kaffeesatz';
-	text-rendering: optimizelegibility;
 	text-align: center;
-	color: #666;
+	color: #727272;
 }
 
 #welcomeDialog .right {
 	float: right;
 	width: 425px;
-	font-size: 20px;
-	font-family: 'Yanone Kaffeesatz';
-	text-rendering: optimizelegibility;
 }
 
 #shareUrlDialog {
@@ -237,7 +236,7 @@ img {border: none;}
 }
 
 #share_url {
-	width: 325px;
+	width: 500px;
 	margin-top: 8px;	
 }
 
@@ -248,9 +247,9 @@ img {border: none;}
     bottom: 0;
     height: 45x;
 	width: 100%;
-	border-top: 1px dotted #666;
+	border-top: 1px dotted #727272;
 	padding: 15px 0 15px 0;
-	color: #666 !important;
+	color: #727272 !important;
 }
 
 #footer-inner {
@@ -258,5 +257,5 @@ img {border: none;}
 }
 
 #footer A:link, A:visited, A:hover, A:active {
-	color: #666 !important;
+	color: #727272 !important;
 }

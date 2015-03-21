@@ -14,8 +14,8 @@ var geoData = null;
 var mapOffsetL = 0;
 var mapOffsetT = 0;
 
-var mapFilledRegionColor = "#6E9058";
-var mapDefaultRegionColor = "#DDD";
+var mapFilledRegionColor = "#4CAF50";
+var mapDefaultRegionColor = "#EEEEEE";
 
 
 // ****************************************************************************
@@ -51,7 +51,7 @@ function renderMap() {
 	// Define a projection for the map
 	var projection = d3.geo.albersUsa()
 		.translate([mapWidth/2, mapHeight/2])
-		.scale([1000]);
+		.scale([mapWidth]);
 
 	// Define path generator
 	var path = d3.geo.path()
@@ -337,6 +337,7 @@ function updateTaxmap() {
 	hideWelcomeDialog();
 	$("#updateTaxmap").hide();
 	$("#updateTaxmapLoading").fadeIn();
+	$("#invalidInputMsg").hide();
 	$("#serverErrorMsg").hide();
 	$("#mapContainer").hide();
 	$("#summaryContainer").hide();
@@ -517,7 +518,7 @@ function showShareUrlDialog() {
 	// Smoothly scroll to the top of the page
 	$("html, body").animate({scrollTop: 0});
 	$("#shareUrlDialog").dialog("open");
-	$("#shareUrlDialog").dialog("option", "width", 375);
+	$("#shareUrlDialog").dialog("option", "width", 450);
 	$("#shareUrlDialog").dialog("option", "height", 95);
 	$("#share_url").val(document.URL);
 	
@@ -629,7 +630,6 @@ $(document).ready(function() {
 
 	$("#shareUrl").click(showShareUrlDialog);
 	$("#shareUrl").attr("disabled", "disabled");
-	$("#shareUrl").button({icons: {primary: "ui-icon-link"}, text: false});
 
 	// Start downloading geo data immediately
 	var q = queue()
