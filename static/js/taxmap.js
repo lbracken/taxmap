@@ -332,8 +332,6 @@ function updateTaxmap() {
 	var prgmCost = selectedPrgm.cost;
 	var prgmName = selectedPrgm.name;
 
-	// TODO: Validate this data...
-
 	hideWelcomeDialog();
 	$("#updateTaxmap").hide();
 	$("#updateTaxmapLoading").fadeIn();
@@ -370,7 +368,12 @@ function onDetermineTaxMapFailure(jqxhr, textStatus, error) {
 	currData = null;
 	$("#updateTaxmap").show();
 	$("#updateTaxmapLoading").stop(true, true).hide();
-	$("#serverErrorMsg").show();
+
+	if(jqxhr && jqxhr.status == 400) {
+		$("#invalidInputMsg").show();
+	} else {
+		$("#serverErrorMsg").show();
+	}
 }
 
 

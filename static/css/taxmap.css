@@ -108,6 +108,12 @@ img {border: none;}
 	height: 300px;  /* For IE6 -- since it doesn't support max-height */
 }
 
+#invalidInputMsg {
+	margin-top: 15px;
+	color: #E65100;
+	font-weight: 600;
+}
+
 #serverErrorMsg {
 	margin-top: 15px;
 	color: #FF0000;

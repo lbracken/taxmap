@@ -39,11 +39,12 @@ def determine_tax_map():
     # Read and validate request arguments
     try:
         zip = request.args.get("zip", "").strip().lower()
+        fips_code = fips_code = get_fips_code_from_zip(zip)
         prgm_name = request.args.get("prgm_name", "").strip()
         prgm_cost = int(request.args.get("prgm_cost", 0))
 
         # Ensure the request parameters are valid, otherwise return a 400
-        if len(zip) != 5 or prgm_cost < 1:
+        if not zip or prgm_cost < 1:
             abort(400)
 
         if verbose:
