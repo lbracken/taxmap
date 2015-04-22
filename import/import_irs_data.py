@@ -40,16 +40,16 @@ def import_county_income_data(filename):
     for line in fin:
         columns = line.strip().split(",")
 
-        fips_code = determine_fips_code(columns[0], columns[1])
+        fips_code = determine_fips_code(columns[0], columns[2])
         region = {
-            "state_abbrv" : columns[2].strip().lower(),
+            "state_abbrv" : columns[1].strip().lower(),
             "name"        : sanitize_name(columns[3]),
-            "num_returns"    : int(columns[4]),
-            "num_exemptions" : int(columns[5]),
-            "agi"       : int(columns[6]) * multiplier,
-            "wages"     : int(columns[7]) * multiplier,
-            "dividends" : int(columns[8]) * multiplier,
-            "interest"  : int(columns[9]) * multiplier
+            "num_returns"    : int(float(columns[5])),
+            "num_exemptions" : int(float(columns[10])),
+            "agi"       : int(float(columns[12])) * multiplier,
+            #"wages"     : int(columns[7]) * multiplier,
+            #"dividends" : int(columns[8]) * multiplier,
+            #"interest"  : int(columns[9]) * multiplier
         }
         
         # Upsert into the DB

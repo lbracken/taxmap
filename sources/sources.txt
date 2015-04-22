@@ -12,14 +12,20 @@ United States Internal Revenue Service (2009). Free County Income Data Downloads
       35,13,NM,Doña Ana County --> 35,13,NM,Dona Ana County
   * 09incidocguide.doc
 
+United States Internal Revenue Service (2012). Free County Income Data Downloads. SOI Tax Stats. Retrieved March 23, 2015, from http://www.irs.gov/uac/SOI-Tax-Stats-County-Data-2012
+  * 12cyallnoagi.csv
+    Modification: line 1835
+      35,NM,013,Doña Ana County --> 35,NM,013,Dona Ana County
+  * 12incydocguide.doc
 
 United States Internal Revenue Service (2009). Historic Table 2. Individual Income and Tax Data, by State and Size of Adjusted Gross Income. SOI Tax Stats. Retrieved January 15, 2014, from http://www.irs.gov/uac/SOI-Tax-Stats---Historic-Table-2
   * 09in54cm.xls
 
-
 Tax Policy Center, Urban Institute and Brookings Institution. Historical Amount of Revenue by Source. Retrieved January 15, 2014, from http://www.taxpolicycenter.org/taxfacts/displayafact.cfm?Docid=203
   * hist_receipt_source_amount.pdf
 
+Tax Policy Center, Urban Institute and Brookings Institution. Historical Amount of Revenue by Source. Retrieved April 21, 2015, from http://www.taxpolicycenter.org/taxfacts/displayafact.cfm?Docid=203
+  * hist_receipt_source_amount(2).pdf
 
 Zip2Fips, ZIP code to FIPS. Retrieved January 21, 2014, from https://github.com/bgruber/zip2fips.
   * zip2fips.json

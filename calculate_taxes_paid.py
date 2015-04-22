@@ -34,7 +34,10 @@ def calculate_taxes_paid():
     """
 
     # From 2009 TaxPolicy Center Data
-    total_indiv_income_taxes_paid = 915308000000
+    #total_indiv_income_taxes_paid = 915308000000
+
+    # From 2012 TaxPolicy Center Data
+    total_indiv_income_taxes_paid = 1132206000000   
 
     # Figure out the total AGI for all counties
     total_agi = regions.aggregate([
@@ -66,6 +69,14 @@ def calculate_taxes_paid():
         agi = region.get("agi")
         fips_code = region.get("_id")
         region_type = region.get("type")
+
+
+        # For privacy reasons, the IRS won't report data for certain counties
+        # with extremely small populations.  In these cases there won't be
+        # a value for AGI, so adjust it to 0.
+        if agi is None:
+            print "!! Adjusting AGI to 1 for %s" % fips_code
+            agi = 0
 
         if region_type == "country":
             agi = 0
