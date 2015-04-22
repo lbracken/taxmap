@@ -197,11 +197,6 @@ img {border: none;}
 	background: #FAFAFA;
 }
 
-.regionSpan {
-	border-bottom: 1px dotted #000;
-	cursor: default;
-}
-
 #mapTooltip {
 	position: absolute;
 	background-color: #222;

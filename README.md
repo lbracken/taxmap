@@ -8,7 +8,7 @@ A running instance is hosted at http://levibracken.com/taxmap.
 
 taxmap uses MongoDB for persistnce. By default it tries to connect to a mongo instance at `localhost:27017`. To use a different host:port, update `settings.cfg`.
 
-To run locally...
+To run taxmap locally...
 
     $ python taxmap.py
 

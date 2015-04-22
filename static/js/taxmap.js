@@ -230,10 +230,10 @@ function renderSummary() {
 	if (currData.regions.length === 1) {
 
 		if (currData.resolution === "country") {
-			summaryMessage += "All federal income taxes paid in the US still couldn't pay for ";
+			summaryMessage += "All federal income taxes paid in the US still wouldn't cover the cost of ";
 		} else {
 			summaryMessage += "The federal income taxes of ";
-			summaryMessage += getRegionSpan(currData.regions[0]);
+			summaryMessage += currData.regions[0].name;
 			summaryMessage += (currData.resolution === "state") ? "" : " County";
 			summaryMessage += " could pay for ";
 		}
@@ -243,7 +243,7 @@ function renderSummary() {
 		var regionsToShowByName = Math.min(maxRegionsToShowByName, currData.regions.length);
 		for (var ctr=0; ctr < regionsToShowByName - 1; ctr++) {
 			summaryMessage += (ctr > 0) ? ", " : "";
-			summaryMessage += getRegionSpan(currData.regions[ctr]);
+			summaryMessage += currData.regions[ctr].name;
 		}
 
 		summaryMessage += " and ";
@@ -252,7 +252,7 @@ function renderSummary() {
 			summaryMessage += " other";
 			summaryMessage += (currData.resolution === "state") ? " states" : " counties";			
 		} else {
-			summaryMessage += getRegionSpan(currData.regions[regionsToShowByName-1]);			
+			summaryMessage += currData.regions[regionsToShowByName-1].name;			
 			summaryMessage += (currData.resolution === "state") ? "" : " counties";
 		}
 
@@ -270,20 +270,6 @@ function renderSummary() {
 	$("#showMoreDetails").show();
 	$("#summaryDetails").empty();
 	$("#summaryContainer").fadeIn();
-}
-
-
-function getRegionSpan(region) {
-
-	var regionSpan = "<span class='regionSpan' title='Income Taxes Paid: $";
-	regionSpan += formatInteger(region.est_taxes);
-	regionSpan += "  Population: ";
-	regionSpan += formatInteger(region.population);
-	regionSpan += "'>";
-	regionSpan += region.name;
-	regionSpan += "</span>"
-	
-	return regionSpan;
 }
 
 
